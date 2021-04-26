@@ -1,6 +1,6 @@
 import numpy as np
 
-def signum(x):
+def signum(netVal):
     return 0
 
 def perceptron(epochs, X, T, bias, rate):
