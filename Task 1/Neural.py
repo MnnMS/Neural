@@ -4,7 +4,7 @@ def signum(netVal):
     return 0
 
 def perceptron(epochs, X, T, bias, rate):
-    W = np.random.rand([1, 3])
+    W = np.random.rand(1, 3)
     if not bias:
         W[0] = 0
     while epochs:
