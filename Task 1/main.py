@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import train
 import random
+import numpy as np
 
 dataset = pd.read_csv('IrisData.txt')
 #print(dataset)
@@ -23,7 +24,6 @@ dataset = pd.read_csv('IrisData.txt')
     # P1 = [0, xj]
     # xi = -b / w1
     # P2 = [xi, 0]
-=======
 Data =  np.array(dataset)
 Class1 = Data[:50]
 random.shuffle(Class1)
@@ -43,6 +43,5 @@ elif (class2, class3):
         T = [Class2[:30,4], Class3[:30,4]]
 # w = train.perceptron(epochs,X,T,biasFlag,LearnRate)
 # todo 4.2 draw classification Line.
->>>>>>> f7be4c552a55664e7fee258fd21624c90c2a5815
 
 # Todo 5.Test
