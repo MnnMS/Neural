@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 
 def replace(dataset, cl1, cl2):
     if cl1 == 'Iris-setosa' and cl2 == 'Iris-versicolor':
@@ -70,25 +69,33 @@ def draw(dataset, x, y):
 
     plt.xlabel(x)
     plt.ylabel(y)
-    plt.show()
+    #plt.show()
 
-def extractFeatures(dataset,class1,class2,f1,f2):
+def extractFeatures(dataset,class1,class2,f1,f2,trainFlag):
     Data = np.array(dataset)
     Class1 = Data[:50]
-    random.shuffle(Class1)
+    np.random.shuffle(Class1)
     Class2 = Data[50:100]
-    random.shuffle(Class2)
+    np.random.shuffle(Class2)
     Class3 = Data[100:150]
-    random.shuffle(Class3)
-    b = np.ones([50, 1])
-    if (class1, class2):
-        X = [b[:30], Class1[:30, f1], Class2[:30, f2]]
-        T = [Class1[:30, 4], Class2[:30, 4]]
-    elif (class1, class3):
-        X = [b[:30], Class1[:30, f1], Class3[:30, f2]]
-        T = [Class1[:30, 4], Class3[:30, 4]]
-    elif (class2, class3):
-        X = [b[:30], Class2[:30, f1], Class3[:30, f2]]
-        T = [Class2[:30, 4], Class3[:30, 4]]
+    np.random.shuffle(Class3)
+
+    start = 0 if trainFlag else 30
+    end = 30 if trainFlag else 50
+    size = 60 if trainFlag else 40
+
+    b = np.ones([size, 1])
+    if class1 == 'Iris-setosa' and  class2 == 'Iris-versicolor':
+        X = np.concatenate((Class1[start:end, [f1, f2]], Class2[start:end, [f1, f2]]))
+        X = np.concatenate((b, X), axis=1)
+        T = np.concatenate((Class1[start:end, 4], Class2[start:end, 4]))
+    elif class1 == 'Iris-setosa' and  class2 == 'Iris-virginica':
+        X = np.concatenate((Class1[start:end, [f1, f2]], Class3[start:end, [f1, f2]]))
+        X = np.concatenate((b, X), axis=1)
+        T = np.concatenate((Class1[start:end, 4], Class3[start:end, 4]))
+    elif class2 == 'Iris-virginica' and  class1 == 'Iris-versicolor':
+        X = np.concatenate((Class2[start:end,[f1,f2]], Class3[start:end, [f1,f2]]))
+        X = np.concatenate((b, X), axis=1)
+        T = np.concatenate((Class2[start:end, 4], Class3[start:end, 4]))
 
     return X,T
