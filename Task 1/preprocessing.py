@@ -34,8 +34,8 @@ def draw(dataset, x, y):
     plt.scatter(X21[:, x], X21[:, y])
     plt.scatter(X31[:, x], X31[:, y])
 
-    plt.xlabel('X%i'.format(x+1))
-    plt.ylabel('X%i'.format(y+1))
+    plt.xlabel('X{}'.format(x+1))
+    plt.ylabel('X{}'.format(y+1))
     #plt.show()
 
 def extractFeatures(dataset,class1,class2,f1,f2,trainFlag):
