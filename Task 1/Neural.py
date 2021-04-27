@@ -2,7 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def signum(netVal):
-    return 1 if netVal > 0 else -1
+    if netVal == 0:
+        return 0
+    else:
+        return 1 if netVal > 0 else -1
 
 def perceptron(epochs, X, T, bias, rate):
     W = np.random.rand(3, 1)
@@ -47,3 +50,22 @@ def drawLine(dataset, W):
     # print(P2)
     # #plt.figure('fig')
     # plt.plot(P1, P2)
+
+def test(X, T, W):
+    classes = np.unique(T)
+    num_of_classes = classes.size
+    confusion_matrix = np.zeros([num_of_classes, num_of_classes])
+
+    for i in range(0, X.shape[0]):
+        net = np.dot(W.T, X[i])
+        yhat = signum(net)
+        index = np.where(classes == T[i])
+        if yhat == T[i]:
+            confusion_matrix[index, index] += 1
+        else:
+            index_y = np.where(classes == yhat)
+            confusion_matrix[index, index_y] += 1
+
+    accuracy = (sum(np.diagonal(confusion_matrix)))/40
+
+    return confusion_matrix, accuracy

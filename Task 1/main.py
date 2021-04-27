@@ -4,11 +4,8 @@ from tkinter import ttk
 import tkinter as tk
 import Neural
 import preprocessing
-import testing
 import numpy as np
 import tkinter.messagebox
-
-
 
 dataset = pd.read_csv('IrisData.txt')
 X_test = np.array([])
@@ -29,7 +26,7 @@ def Train():
     preprocessing.replace(dataset, class1, class2)
     X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
     W = Neural.perceptron(int(epochs_txt.get()),X,T,var.get(),float(lrnRate_txt.get()))
-    print(W)
+    #print(W)
     preprocessing.draw(dataset, f1_combo.get(), f2_combo.get())
     Neural.drawLine(dataset, W)
 
@@ -48,8 +45,8 @@ def test():
     if X_test.size == 0 and T_test.size == 0 and W_test.size == 0:
         tk.messagebox.showinfo(title=None, message="Please train data before testing")
     else:
-        matrix, accuracy = testing.test(X_test, T_test, W_test);
-        print("confusion Matrix = \n",matrix);
+        matrix, accuracy = Neural.test(X_test, T_test, W_test)
+        print("confusion Matrix = \n",matrix)
         print("Accuracy = ",accuracy)
 
 
