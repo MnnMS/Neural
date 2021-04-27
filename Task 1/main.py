@@ -27,7 +27,7 @@ def Train():
     X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
     W = Neural.perceptron(int(epochs_txt.get()),X,T,var.get(),float(lrnRate_txt.get()))
     #print(W)
-    preprocessing.draw(dataset, f1_combo.get(), f2_combo.get())
+    preprocessing.draw(dataset, f1_combo.current(), f2_combo.current())
     Neural.drawLine(dataset, W)
 
     # testing

@@ -29,46 +29,13 @@ def draw(dataset, x, y):
     X21 = arr[50:100, :4]
     X31 = arr[100:150, :4]
 
+    plt.figure('fig')
+    plt.scatter(X11[:, x], X11[:, y])
+    plt.scatter(X21[:, x], X21[:, y])
+    plt.scatter(X31[:, x], X31[:, y])
 
-    if x == 'X1' and y == 'X2':
-        plt.figure('fig')
-        plt.scatter(X11[:, 0], X11[:, 1])
-        plt.scatter(X21[:, 0], X21[:, 1])
-        plt.scatter(X31[:, 0], X31[:, 1])
-
-
-    elif x == 'X1' and y == 'X3':
-        plt.figure('fig')
-        plt.scatter(X11[:, 0], X11[:, 2])
-        plt.scatter(X21[:, 0], X21[:, 2])
-        plt.scatter(X31[:, 0], X31[:, 2])
-
-    elif x == 'X1' and y == 'X4':
-        plt.figure('fig')
-        plt.scatter(X11[:, 0], X11[:, 3])
-        plt.scatter(X21[:, 0], X21[:, 3])
-        plt.scatter(X31[:, 0], X31[:, 3])
-
-    elif x == 'X2' and y == 'X3':
-        plt.figure('fig')
-        plt.scatter(X11[:, 1], X11[:, 2])
-        plt.scatter(X21[:, 1], X21[:, 2])
-        plt.scatter(X31[:, 1], X31[:, 2])
-
-    elif x == 'X2' and y == 'X4':
-        plt.figure('fig')
-        plt.scatter(X11[:, 1], X11[:, 3])
-        plt.scatter(X21[:, 1], X21[:, 3])
-        plt.scatter(X31[:, 1], X31[:, 3])
-
-    elif x == 'X3' and y == 'X4':
-        plt.figure('fig')
-        plt.scatter(X11[:, 2], X11[:, 3])
-        plt.scatter(X21[:, 2], X21[:, 3])
-        plt.scatter(X31[:, 2], X31[:, 3])
-
-    plt.xlabel(x)
-    plt.ylabel(y)
+    plt.xlabel('X%i'.format(x+1))
+    plt.ylabel('X%i'.format(y+1))
     #plt.show()
 
 def extractFeatures(dataset,class1,class2,f1,f2,trainFlag):
