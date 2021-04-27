@@ -4,9 +4,16 @@ from tkinter import ttk
 import tkinter as tk
 import Neural
 import preprocessing
+import testing
+import numpy as np
+import tkinter.messagebox
+
 
 
 dataset = pd.read_csv('IrisData.txt')
+X_test = np.array([])
+T_test = np.array([])
+W_test = np.array([])
 
 def Train():
     if clss_combo.current() == 0:
@@ -28,9 +35,22 @@ def Train():
 
     # testing
     X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(),
-                                         trainFlag=False)
+                                        trainFlag=False)
+    global X_test
+    X_test=X
+    global T_test
+    T_test= T
+    global W_test
+    W_test = W
 
 
+def test():
+    if X_test.size == 0 and T_test.size == 0 and W_test.size == 0:
+        tk.messagebox.showinfo(title=None, message="Please train data before testing")
+    else:
+        matrix, accuracy = testing.test(X_test, T_test, W_test);
+        print("confusion Matrix = \n",matrix);
+        print("Accuracy = ",accuracy)
 
 
 mainForm = Tk()
@@ -65,6 +85,6 @@ bias_check.place(x = 5, y = 250)
 
 
 train_button = Button(mainForm,text = "Train",command = Train).place(x = 300, y = 300)
-#test_button = Button(mainForm,text = "Test",command = test).place(x = 400, y = 300)
+test_button = Button(mainForm,text = "Test",command = test).place(x = 400, y = 300)
 
 mainForm.mainloop()

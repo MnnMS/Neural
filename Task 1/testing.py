@@ -1,4 +1,4 @@
-import train
+import Neural
 import numpy as np
 
 
@@ -9,7 +9,7 @@ def test(X, T, W):
 
     for i in range(0, X.shape[0]):
         net = np.dot(W.T, X[i])
-        yhat = train.signum(net)
+        yhat = Neural.signum(net)
         index = np.where(classes == T[i])
         if yhat == T[i]:
             confusion_matrix[index, index] += 1
