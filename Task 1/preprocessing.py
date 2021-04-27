@@ -36,7 +36,7 @@ def draw(dataset, x, y):
 
     plt.xlabel('X{}'.format(x+1))
     plt.ylabel('X{}'.format(y+1))
-    #plt.show()
+    plt.show()
 
 def extractFeatures(dataset,class1,class2,f1,f2,trainFlag):
     Data = np.array(dataset)
