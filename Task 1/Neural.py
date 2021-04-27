@@ -27,42 +27,19 @@ def perceptron(epochs, X, T, bias, rate):
 
     return W
 
-def drawLine(dataset,class1, class2, W, f1, f2):
+def drawLine(dataset, W):
     arr = np.array(dataset)
-    Class1 = arr[:50, :4]
-    Class2 = arr[50:100, :4]
-    Class3 = arr[100:150, :4]
-    if class1 == 'Iris-setosa' and  class2 == 'Iris-versicolor':
-        f1_C1 = Class1[:, f1]
-        f1_C2 = Class2[:, f1]
-        f2_C1 = Class1[:, f2]
-        f2_C2 = Class2[:, f2]
-    elif class1 == 'Iris-setosa' and  class2 == 'Iris-virginica':
-        f1_C1 = Class1[:, f1]
-        f1_C2 = Class3[:, f1]
-        f2_C1 = Class1[:, f2]
-        f2_C2 = Class3[:, f2]
-    elif class2 == 'Iris-virginica' and  class1 == 'Iris-versicolor':
-        f1_C1 = Class2[:, f1]
-        f1_C2 = Class3[:, f1]
-        f2_C1 = Class2[:, f2]
-        f2_C2 = Class3[:, f2]
-
+    XS = arr[:150,0:4]
+    mn = np.amin(XS)
+    mx = np.amax(XS)
     w1 = W[1][0]
     w2 = W[2][0]
     b = W[0][0]
-
-    plt.scatter(f1_C1, f2_C1)
-    plt.scatter(f1_C2, f2_C2)
-    plt.xlabel('X{}'.format(f1))
-    plt.ylabel('X{}'.format(f2))
-    plt.legend([class1, class2])
-
-    print(W)
-    slope = -(b / w2) / (b / w1) if b > 0 else -w2/w1
-    inter = -(b / w2)
-    y = slope*f1_C1 + inter
-    plt.plot(f1_C1, y, color='red')
+    for i in np.linspace(mn, mx):
+        slope = -(b / w2)/(b / w1)
+        inter = -(b/ w2)
+        y = slope*i + inter
+        plt.plot(i, y, 'ko')
     plt.show()
 
     # xj = -b / w2
