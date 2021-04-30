@@ -2,6 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def signum(netVal):
+    if netVal == 0:
+        return 0
+    else:
+        return 1 if netVal > 0 else -1
+
 def adaline(epochs, X, T, rate,mse):
     newMse = 0
     W = np.random.rand(3, 1)
@@ -52,7 +58,7 @@ def test(X, T, W):
 
     for i in range(0, X.shape[0]):
         net = np.dot(W.T, X[i])
-        yhat = net
+        yhat = signum(net)
         index = np.where(classes == T[i])
         if yhat == T[i]:
             confusion_matrix[index, index] += 1
