@@ -21,9 +21,9 @@ def adaline(epochs, X, T, rate,mse):
             value = np.dot(W.T, X[e])
             newError = np.square(T[e] - value)
             newMse += newError
-            newMse *= 1 / 120
+        newMse *= 1 / 120
         if newMse <= mse:
-            break
+            return W
         newMse = 0
         epochs -= 1
 

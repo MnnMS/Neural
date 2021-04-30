@@ -29,7 +29,7 @@ def Train():
     class1, class2 = filter(clss_combo.current(),clss_combo.current())
     preprocess.replace(dataset, class1, class2)
     X, T = preprocess.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
-
+    #int(epochs_txt.get()),X,T,float(lrnRate_txt.get()),float(mse_txt.get())
     W = neural.adaline(int(epochs_txt.get()),X,T,float(lrnRate_txt.get()),float(mse_txt.get()))
 
     preprocess.draw(dataset, f1_combo.current(), f2_combo.current())
@@ -56,7 +56,7 @@ def test():
 
 mainForm = Tk()
 mainForm.geometry("650x500")
-mainForm.title("Task 1")
+mainForm.title("Task 2")
 
 f1_label = Label(mainForm,text = "Select Feature 1").place(x = 5, y = 10)
 f2_label = Label(mainForm,text ="Select Feature 2").place(x = 5, y = 50)
