@@ -30,8 +30,8 @@ def Train():
     preprocess.replace(dataset, class1, class2)
     X, T = preprocess.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
 
-    W = neural.perceptron(int(epochs_txt.get()),X,T,float(lrnRate_txt.get()))
-    
+    W = neural.adaline(int(epochs_txt.get()),X,T,float(lrnRate_txt.get()),float(mse_txt.get()))
+
     preprocess.draw(dataset, f1_combo.current(), f2_combo.current())
     neural.drawLine(dataset, W)
 
@@ -63,6 +63,7 @@ f2_label = Label(mainForm,text ="Select Feature 2").place(x = 5, y = 50)
 clss_label = Label(mainForm,text ="Select Classes").place(x = 5, y = 100)
 lrnRate_label = Label(mainForm,text ="Enter Learning Rate").place(x = 5, y = 150)
 epochs_label = Label(mainForm,text ="Enter number of epochs").place(x = 5, y = 200)
+mse_label = Label(mainForm,text ="Enter MSE").place(x = 5, y = 250)
 
 features = ('X1','X2','X3','X4')
 f1_combo = ttk.Combobox(mainForm,width = 10, values = features)
@@ -79,6 +80,10 @@ lrnRate_txt.place(x = 150, y = 150)
 epoch_var = tk.IntVar()
 epochs_txt = Entry(mainForm)
 epochs_txt.place(x = 150, y = 200)
+mse_var = tk.IntVar()
+mse_txt = Entry(mainForm)
+mse_txt.place(x = 150, y = 250)
+
 
 train_button = Button(mainForm,text = "Train",command = Train).place(x = 300, y = 300)
 test_button = Button(mainForm,text = "Test",command = test).place(x = 400, y = 300)
