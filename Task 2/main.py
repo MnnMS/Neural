@@ -2,8 +2,8 @@ import pandas as pd
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-#import Neural
-#import preprocessing
+import neural
+import preprocess
 import numpy as np
 import tkinter.messagebox
 
@@ -27,15 +27,16 @@ def filter(c1,c2):
 def Train():
 
     class1, class2 = filter(clss_combo.current(),clss_combo.current())
-    preprocessing.replace(dataset, class1, class2)
-    X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
-    W = Neural.perceptron(int(epochs_txt.get()),X,T,float(lrnRate_txt.get()))
-    #print(W)
-    preprocessing.draw(dataset, f1_combo.current(), f2_combo.current())
-    Neural.drawLine(dataset, W)
+    preprocess.replace(dataset, class1, class2)
+    X, T = preprocess.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
+
+    W = neural.perceptron(int(epochs_txt.get()),X,T,float(lrnRate_txt.get()))
+    
+    preprocess.draw(dataset, f1_combo.current(), f2_combo.current())
+    neural.drawLine(dataset, W)
 
     # testing
-    X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(),
+    X, T = preprocess.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(),
                                         trainFlag=False)
     global X_test
     X_test=X
@@ -49,7 +50,7 @@ def test():
     if X_test.size == 0 and T_test.size == 0 and W_test.size == 0:
         tk.messagebox.showinfo(title=None, message="Please train data before testing")
     else:
-        matrix, accuracy = Neural.test(X_test, T_test, W_test)
+        matrix, accuracy = neural.test(X_test, T_test, W_test)
         print("confusion Matrix = \n",matrix)
         print("Accuracy = ",accuracy)
 
