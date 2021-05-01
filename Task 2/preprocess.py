@@ -34,8 +34,14 @@ def extractFeatures(dataset,class1,class2,f1,f2):
         T = np.concatenate((Class2[:, 4], Class3[:, 4]))
         C11, C12, C21, C22 = get_XY(Class2, Class3, f1, f2)
 
-    X_Train, X_Test, T_Train, T_Test = train_test_split(X, T, test_size=0.4)
+    X_TrainC1, X_TestC1, T_TrainC1, T_TestC1 = train_test_split(X[:50,:], T[:50], test_size=0.4)
+    X_TrainC2, X_TestC2, T_TrainC2, T_TestC2 = train_test_split(X[50:100,:], T[50:100], test_size=0.4)
     classXY = [C11, C12, C21, C22]
+
+    X_Train = np.concatenate((X_TrainC1, X_TrainC2))
+    X_Test = np.concatenate((X_TestC1, X_TestC2))
+    T_Train = np.concatenate((T_TrainC1, T_TrainC2))
+    T_Test = np.concatenate((T_TestC1, T_TestC2))
 
     return X_Train, X_Test, T_Train, T_Test, classXY
 

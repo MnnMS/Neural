@@ -20,7 +20,8 @@ def Train():
     # train
     W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()))
     diagramData = [class1, class2, f1_combo.current(), f2_combo.current()]
-    neural.drawLine(classXY[0], classXY[1], classXY[2], classXY[3], W, diagramData)
+    #neural.drawLine(classXY[0], classXY[1], classXY[2], classXY[3], W, diagramData)
+    neural.drawLine2(X_Test, W, diagramData)
 
     # test
     global X_test
