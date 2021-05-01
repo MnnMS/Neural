@@ -1,4 +1,3 @@
-import pandas as pd
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
@@ -7,44 +6,29 @@ import preprocess
 import numpy as np
 import tkinter.messagebox
 
-dataset = pd.read_csv('IrisData.txt')
 X_test = np.array([])
 T_test = np.array([])
 W_test = np.array([])
-
-def filter(c1,c2):
-    if  c1== 0:
-        class1 = 'Iris-setosa'
-        class2 = 'Iris-versicolor'
-    elif  c2== 1:
-        class1 = 'Iris-setosa'
-        class2 = 'Iris-virginica'
-    else:
-        class1 = 'Iris-versicolor'
-        class2 = 'Iris-virginica'
-    return class1, class2
+Classes = {0:['Iris-setosa', 'Iris-versicolor'], 1:['Iris-setosa', 'Iris-virginica'], 2:['Iris-versicolor', 'Iris-virginica']}
 
 def Train():
+    #preprocess
+    class1, class2 = Classes[clss_combo.current()]
+    dataset = preprocess.set_labels(class1, class2)
+    X_Train, X_Test, T_Train, T_Test, classXY = preprocess.extractFeatures(dataset,class1,class2,f1_combo.current(),f2_combo.current())
 
-    class1, class2 = filter(clss_combo.current(),clss_combo.current())
-    preprocess.replace(dataset, class1, class2)
-    X, T = preprocess.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
-    #int(epochs_txt.get()),X,T,float(lrnRate_txt.get()),float(mse_txt.get())
-    W = neural.adaline(int(epochs_txt.get()),X,T,float(lrnRate_txt.get()),float(mse_txt.get()))
+    # train
+    W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()))
+    diagramData = [class1, class2, f1_combo.current(), f2_combo.current()]
+    neural.drawLine(classXY[0], classXY[1], classXY[2], classXY[3], W, diagramData)
 
-    preprocess.draw(dataset, f1_combo.current(), f2_combo.current())
-    neural.drawLine(dataset, W)
-
-    # testing
-    X, T = preprocess.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(),
-                                        trainFlag=False)
+    # test
     global X_test
-    X_test=X
+    X_test= X_Test
     global T_test
-    T_test= T
+    T_test= T_Test
     global W_test
     W_test = W
-
 
 def test():
     if X_test.size == 0 and T_test.size == 0 and W_test.size == 0:

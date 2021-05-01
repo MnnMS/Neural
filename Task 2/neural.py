@@ -10,44 +10,42 @@ def signum(netVal):
 
 def adaline(epochs, X, T, rate,mse):
     newMse = 0
+    m, _ = X.shape
     W = np.random.rand(3, 1)
     while epochs:
-        for i in range(60):
-            netValue = np.dot(W.T, X[i])
-            yhat = netValue
+        for i in range(m):
+            yhat = np.dot(W.T, X[i])
             if yhat == T[i]:
                 continue
             else:
                 L = T[i] - yhat
-                k = rate * L * X[i]
-                c = k.reshape(3,1)
-                for j in range(3):
-                    W[j][0] += c[j][0]
-        for e in range(60):
+                W = W + (np.multiply(rate * L, X[i]).reshape(3, 1))
+
+        for e in range(m):
             value = np.dot(W.T, X[e])
             newError = np.square(T[e] - value)
             newMse += newError
-        newMse *= 1 / 120
+        newMse *= 1 / (2*m)
         if newMse <= mse:
             return W
+
         newMse = 0
         epochs -= 1
 
     return W
 
-def drawLine(dataset, W):
-    arr = np.array(dataset)
-    XS = arr[:150,0:4]
-    mn = np.amin(XS)
-    mx = np.amax(XS)
+def drawLine(c1X, c1Y, c2X, c2Y, W, data):
+    plt.scatter(c1X, c1Y)
+    plt.scatter(c2X, c2Y)
+    plt.xlabel('X{}'.format(data[2]+1))
+    plt.ylabel('X{}'.format(data[3]+1))
+    plt.legend([data[0],data[1]])
+
     w1 = W[1][0]
     w2 = W[2][0]
     b = W[0][0]
-    for i in np.linspace(mn, mx):
-        slope = -(b / w2)/(b / w1)
-        inter = -(b/ w2)
-        y = slope*i + inter
-        plt.plot(i, y, 'ko')
+    y = np.multiply((-w1 / w2), c1X) - (b / w2)
+    plt.plot(c1X, y, color='black', lw=4)
     plt.show()
 
 
