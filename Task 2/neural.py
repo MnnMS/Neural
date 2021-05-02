@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import math
-import sklearn
 
 def signum(netVal):
     if netVal == 0:
@@ -9,10 +7,12 @@ def signum(netVal):
     else:
         return 1 if netVal > 0 else -1
 
-def adaline(epochs, X, T, rate,mse):
+def adaline(epochs, X, T, rate,mse, bias):
     newMse = 0
     m, _ = X.shape
     W = np.random.rand(3, 1)
+    if not bias:
+        W[0][0] = 0
     while epochs:
         for i in range(m):
             yhat = np.dot(W.T, X[i])
@@ -35,38 +35,24 @@ def adaline(epochs, X, T, rate,mse):
 
     return W
 
-def drawLine(c1X, c1Y, c2X, c2Y, W, data):
-    plt.scatter(c1X, c1Y)
-    plt.scatter(c2X, c2Y)
-    plt.xlabel('X{}'.format(data[2]+1))
-    plt.ylabel('X{}'.format(data[3]+1))
-    plt.legend([data[0],data[1]])
-
+def drawLine(X_test, W, data):
     w1 = W[1][0]
     w2 = W[2][0]
     b = W[0][0]
-    y = np.multiply((-w1 / w2), c2X) - (b / w2)
-    plt.plot(c2X, y, color='black', lw=4)
-    #plt.grid(True, lw=0.75, ls='--', alpha=0.75)
+    x = [np.min(X_test[:, [1,2]]), np.max(X_test[:, [1,2]])]
+    y = [(-1 * w1 * x[0] - b) / w2, (-1 * w1 * x[1] - b) / w2]
+    drawClasses(X_test, data)
+    plt.plot(x, y, color='black', lw=2.5)
     plt.show()
 
-def drawLine2(X_test, W, data):
+def drawClasses(X_test, data):
     C11, C12, C21, C22 = get_XY(X_test)
     plt.scatter(C11, C12)
     plt.scatter(C21, C22)
     plt.xlabel('X{}'.format(data[2] + 1))
     plt.ylabel('X{}'.format(data[3] + 1))
     plt.legend([data[0], data[1]])
-
-    w1 = W[1][0]
-    w2 = W[2][0]
-    b = W[0][0]
-    x = [np.min(X_test[:, [1,2]]), np.max(X_test[:, [1,2]])]
-    y = [(-1 * w1 * x[0] - b) / w2, (-1 * w1 * x[1] - b) / w2]
-    plt.plot(x, y, color='black', lw=3)
-    plt.grid(True, lw=0.75, ls='--', alpha=0.75)
-    plt.show()
-
+    plt.grid(lw=0.7, ls='--', alpha=0.8)
 
 def get_XY(X_test):
     C11 = X_test[:20, 1]
@@ -75,21 +61,15 @@ def get_XY(X_test):
     C22 = X_test[20:40, 2]
     return C11, C12, C21, C22
 
-
 def test(X, T, W):
     classes = np.unique(T)
     num_of_classes = classes.size
     confusion_matrix = np.zeros([num_of_classes, num_of_classes])
-    yhat_test = []
-    none =0
-    pone = 0
-    for t in T:
-        if t == 1: pone+=1
-        else: none+=1
-    for i in range(0, X.shape[0]):
+    total = X.shape[0]
+
+    for i in range(0, total):
         net = np.dot(W.T, X[i])
         yhat = signum(net)
-        yhat_test.append(yhat)
         index = np.where(classes == T[i])
         if yhat == T[i]:
             confusion_matrix[index, index] += 1
@@ -97,7 +77,5 @@ def test(X, T, W):
             index_y = np.where(classes == yhat)
             confusion_matrix[index, index_y] += 1
 
-    #accuracy = (sum(np.diagonal(confusion_matrix)))/40
-    confusion = sklearn.metrics.confusion_matrix(T.tolist(), yhat_test)
-    accuracy = np.mean(yhat_test == T.flatten()) * 100
-    return confusion, accuracy
+    accuracy = ((sum(np.diagonal(confusion_matrix)))/total) * 100
+    return confusion_matrix.astype(int), accuracy

@@ -16,7 +16,7 @@ def extractFeatures(dataset,class1,class2,f1,f2):
     Class3 = Data[100:150]
     np.random.shuffle(Class3)
 
-    b = np.ones([100, 1])
+    b = np.ones([50, 1])
     classA = []
     classB = []
     if class1 == 'Iris-setosa' and  class2 == 'Iris-versicolor':
@@ -32,14 +32,16 @@ def extractFeatures(dataset,class1,class2,f1,f2):
         classB = Class3[:, [f1, f2]]
         T = np.concatenate((Class2[:, 4], Class3[:, 4]))
 
-    X_TrainC1, X_TestC1, T_TrainC1, T_TestC1 = train_test_split(classA, T[:50], test_size=0.4)
-    X_TrainC2, X_TestC2, T_TrainC2, T_TestC2 = train_test_split(classB, T[50:100], test_size=0.4)
+    X_TrainC1, X_TestC1, T_TrainC1, T_TestC1, b_Train1, b_Test1 = train_test_split(classA, T[:50], b, test_size=0.4)
+    X_TrainC2, X_TestC2, T_TrainC2, T_TestC2, b_Train2, b_Test2 = train_test_split(classB, T[50:100], b, test_size=0.4)
 
     X_Train = np.concatenate((X_TrainC1, X_TrainC2))
-    X_Train = np.concatenate((b[0:60], X_Train), axis=1)
+    b_Train = np.concatenate((b_Train1, b_Train2))
+    X_Train = np.concatenate((b_Train, X_Train), axis=1)
 
     X_Test = np.concatenate((X_TestC1, X_TestC2))
-    X_Test = np.concatenate((b[60:100], X_Test), axis=1)
+    b_Test = np.concatenate((b_Test1, b_Test2))
+    X_Test = np.concatenate((b_Test, X_Test), axis=1)
 
     T_Train = np.concatenate((T_TrainC1, T_TrainC2))
     T_Test = np.concatenate((T_TestC1, T_TestC2))
