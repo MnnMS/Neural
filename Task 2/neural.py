@@ -8,10 +8,12 @@ def signum(netVal):
     else:
         return 1 if netVal > 0 else -1
 
-def adaline(epochs, X, T, rate,mse):
+def adaline(epochs, X, T, rate,mse,bias):
     newMse = 0
     m, _ = X.shape
     W = np.random.rand(3, 1)
+    if not bias:
+        W[0][0] = 0
     while epochs:
         for i in range(m):
             yhat = np.dot(W.T, X[i])

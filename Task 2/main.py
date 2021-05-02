@@ -18,7 +18,7 @@ def Train():
     X_Train, X_Test, T_Train, T_Test, classXY = preprocess.extractFeatures(dataset,class1,class2,f1_combo.current(),f2_combo.current())
 
     # train
-    W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()))
+    W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()),var.get())
     diagramData = [class1, class2, f1_combo.current(), f2_combo.current()]
     neural.drawLine(classXY[0], classXY[1], classXY[2], classXY[3], W, diagramData)
 
@@ -67,7 +67,9 @@ epochs_txt.place(x = 150, y = 200)
 mse_var = tk.IntVar()
 mse_txt = Entry(mainForm)
 mse_txt.place(x = 150, y = 250)
-
+var = tk.IntVar()
+bias_check = Checkbutton(mainForm,text = "Bias",variable=var)
+bias_check.place(x = 5, y = 250)
 
 train_button = Button(mainForm,text = "Train",command = Train).place(x = 300, y = 300)
 test_button = Button(mainForm,text = "Test",command = test).place(x = 400, y = 300)
