@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import sklearn
 
 def signum(netVal):
     if netVal == 0:
@@ -49,16 +49,46 @@ def drawLine(c1X, c1Y, c2X, c2Y, W, data):
     y = np.multiply((-w1 / w2), c1X) - (b / w2)
     plt.plot(c1X, y, color='black', lw=4)
     plt.show()
+def drawLine2(X_test, W, data):
+    C11, C12, C21, C22 = get_XY(X_test)
+    plt.scatter(C11, C12)
+    plt.scatter(C21, C22)
+    plt.xlabel('X{}'.format(data[2] + 1))
+    plt.ylabel('X{}'.format(data[3] + 1))
+    plt.legend([data[0], data[1]])
+
+    w1 = W[1][0]
+    w2 = W[2][0]
+    b = W[0][0]
+    x = [np.min(X_test[:, [1,2]]), np.max(X_test[:, [1,2]])]
+    y = [(-1 * w1 * x[0] - b) / w2, (-1 * w1 * x[1] - b) / w2]
+    plt.plot(x, y, color='black', lw=3)
+    plt.grid(True, lw=0.75, ls='--', alpha=0.75)
+    plt.show()
+
+def get_XY(X_test):
+    C11 = X_test[:20, 1]
+    C12 = X_test[:20, 2]
+    C21 = X_test[20:40, 1]
+    C22 = X_test[20:40, 2]
+    return C11, C12, C21, C22
+
 
 
 def test(X, T, W):
     classes = np.unique(T)
     num_of_classes = classes.size
     confusion_matrix = np.zeros([num_of_classes, num_of_classes])
-
+    yhat_test = []
+    none =0
+    pone = 0
+    for t in T:
+        if t == 1: pone+=1
+        else: none+=1
     for i in range(0, X.shape[0]):
         net = np.dot(W.T, X[i])
         yhat = signum(net)
+        yhat_test.append(yhat)
         index = np.where(classes == T[i])
         if yhat == T[i]:
             confusion_matrix[index, index] += 1
@@ -66,6 +96,7 @@ def test(X, T, W):
             index_y = np.where(classes == yhat)
             confusion_matrix[index, index_y] += 1
 
-    accuracy = (sum(np.diagonal(confusion_matrix)))/40
-
-    return confusion_matrix, accuracy
+    #accuracy = (sum(np.diagonal(confusion_matrix)))/40
+    confusion = sklearn.metrics.confusion_matrix(T.tolist(), yhat_test)
+    accuracy = np.mean(yhat_test == T.flatten()) * 100
+    return confusion, accuracy
