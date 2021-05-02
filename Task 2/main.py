@@ -15,7 +15,7 @@ def Train():
     #preprocess
     class1, class2 = Classes[clss_combo.current()]
     dataset = preprocess.set_labels(class1, class2)
-    X_Train, X_Test, T_Train, T_Test, classXY = preprocess.extractFeatures(dataset,class1,class2,f1_combo.current(),f2_combo.current())
+    X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(dataset,class1,class2,f1_combo.current(),f2_combo.current())
 
     # train
     W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()))
