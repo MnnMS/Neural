@@ -1,65 +1,53 @@
-import pandas as pd
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
-import Neural
-import preprocessing
+import neural
+import preprocess
 import numpy as np
 import tkinter.messagebox
 
-dataset = pd.read_csv('IrisData.txt')
 X_test = np.array([])
 T_test = np.array([])
 W_test = np.array([])
+Classes = {0:['Iris-setosa', 'Iris-versicolor'], 1:['Iris-setosa', 'Iris-virginica'], 2:['Iris-versicolor', 'Iris-virginica']}
 
 def Train():
-    if clss_combo.current() == 0:
-        class1 = 'Iris-setosa'
-        class2 = 'Iris-versicolor'
-    elif clss_combo.current() == 1:
-        class1 = 'Iris-setosa'
-        class2 = 'Iris-virginica'
-    else:
-        class1 = 'Iris-versicolor'
-        class2 = 'Iris-virginica'
+    #preprocess
+    class1, class2 = Classes[clss_combo.current()]
+    dataset = preprocess.set_labels(class1, class2)
+    X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(dataset,class1,class2,f1_combo.current(),f2_combo.current())
 
-    preprocessing.replace(dataset, class1, class2)
-    X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(), trainFlag=True)
-    W = Neural.perceptron(int(epochs_txt.get()),X,T,var.get(),float(lrnRate_txt.get()))
-    #print(W)
-    preprocessing.draw(dataset, f1_combo.current(), f2_combo.current())
-    Neural.drawLine(dataset, W)
+    # train
+    W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()), bias_var.get())
+    diagramData = [class1, class2, f1_combo.current(), f2_combo.current()]
+    neural.drawLine(X_Test, W, diagramData)
 
-    # testing
-    X, T = preprocessing.extractFeatures(dataset, class1, class2, f1_combo.current(), f2_combo.current(),
-                                        trainFlag=False)
+    # test
     global X_test
-    X_test=X
+    X_test= X_Test
     global T_test
-    T_test= T
+    T_test= T_Test
     global W_test
     W_test = W
-
 
 def test():
     if X_test.size == 0 and T_test.size == 0 and W_test.size == 0:
         tk.messagebox.showinfo(title=None, message="Please train data before testing")
     else:
-        matrix, accuracy = Neural.test(X_test, T_test, W_test)
+        matrix, accuracy = neural.test(X_test, T_test, W_test)
         print("confusion Matrix = \n",matrix)
         print("Accuracy = ",accuracy)
 
-
 mainForm = Tk()
 mainForm.geometry("650x500")
-mainForm.title("Task 1")
+mainForm.title("Task 2")
 
 f1_label = Label(mainForm,text = "Select Feature 1").place(x = 5, y = 10)
 f2_label = Label(mainForm,text ="Select Feature 2").place(x = 5, y = 50)
 clss_label = Label(mainForm,text ="Select Classes").place(x = 5, y = 100)
 lrnRate_label = Label(mainForm,text ="Enter Learning Rate").place(x = 5, y = 150)
 epochs_label = Label(mainForm,text ="Enter number of epochs").place(x = 5, y = 200)
-
+mse_label = Label(mainForm,text ="Enter MSE").place(x = 5, y = 250)
 
 features = ('X1','X2','X3','X4')
 f1_combo = ttk.Combobox(mainForm,width = 10, values = features)
@@ -76,9 +64,12 @@ lrnRate_txt.place(x = 150, y = 150)
 epoch_var = tk.IntVar()
 epochs_txt = Entry(mainForm)
 epochs_txt.place(x = 150, y = 200)
-var = tk.IntVar()
-bias_check = Checkbutton(mainForm,text = "Bias",variable=var)
-bias_check.place(x = 5, y = 250)
+mse_var = tk.IntVar()
+mse_txt = Entry(mainForm)
+mse_txt.place(x = 150, y = 250)
+bias_var = tk.IntVar()
+bias_check = Checkbutton(mainForm,text = "Bias",variable=bias_var)
+bias_check.place(x = 5, y = 300)
 
 
 train_button = Button(mainForm,text = "Train",command = Train).place(x = 300, y = 300)
