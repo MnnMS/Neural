@@ -2,8 +2,8 @@ import numpy as np
 
 
 def tangetHyperbolic(netVal):
-
-    return netVal
+    output = (1-np.exp(-netVal))/(1+np.exp(-netVal))
+    return output
 
 def sigmoid(netVal):
     output = 1/(1 + np.exp(-netVal))
