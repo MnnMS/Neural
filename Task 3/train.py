@@ -18,8 +18,10 @@ def train(X,Y,layers,epochs,learn_rate,bias,activ_fun):
     layers.append(outPutClasses)
     weights = []
     for i in range(len(layers) - 1):
-        numOfWeights = layers[i] * layers[i + 1]
-        weights.append(np.random.rand(1, numOfWeights)[0])
+        row = layers[i]
+        col = layers[i+1]
+        #numOfWeights = layers[i] * layers[i + 1]
+        weights.append(np.random.rand(row, col)[0])
 
     noOfSamples,noOfFeatures = X.shape
     while epochs:
