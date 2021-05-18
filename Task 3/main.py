@@ -15,12 +15,17 @@ def set_text(text, txtBox):
 
 def autoFill():
     layers = random.randrange(2,6)
-    neurons = np.random.randint(5, 10, 3)
+    neurons = np.random.randint(1, 5, layers)
     funct = random.randrange(2)
     set_text(str(layers), layers_txt)
     set_text("0.01", lrnRate_txt)
     set_text("100", epochs_txt)
-    set_text("{},{},{}".format(neurons[0],neurons[1],neurons[2]),neu_txt)
+    neur_txt = ""
+    for i in range(layers):
+        neur_txt += str(neurons[i])
+        if i != layers-1:
+            neur_txt += ','
+    set_text(neur_txt,neu_txt)
     funcs_combo.set(functions[funct])
     bias_check.select()
     return 
@@ -39,8 +44,9 @@ def Train():
     X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
     
     # train
-    W = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
-    
+    W,nu = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
+    print(W,nu)
+
 
     # # test
     # global X_test
