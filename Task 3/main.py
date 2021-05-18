@@ -31,9 +31,10 @@ def Train():
         neurons[i] = int(neurons[i])
     epochs_val = int(epochs_txt.get())
     lrnRate_var = float(lrnRate_txt.get())
+    bias_val = int(bias_var.get())
 
     #preprocess
-    #X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(dataset,class1,class2,f1_combo.current(),f2_combo.current())
+    X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
 
     # train
     # W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()), bias_var.get())
