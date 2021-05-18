@@ -29,7 +29,7 @@ def forwardProp(X,Y,weights,layers,activation,*netVal):
 
     return weights,neurons
 
-def backword(weights,neurons,Y,layers,activation,netVal):
+def backword(weights,neurons,Y,activation,netVal):
     errorSignal = []
     yHatOutputLayer = neurons.pop()
 
@@ -39,21 +39,20 @@ def backword(weights,neurons,Y,layers,activation,netVal):
     outputLayer = (Y-yHatOutputLayer)*d
     errorSignal.insert(outputLayer)
     weightsRev = weights[::-1]
-    for i in range(len(layers)-1):
+    for i in range(len(weights)-1):
         if activation == 'sigmoid':
-            d = sigmoidDerivative(netVal[i])
+            d = sigmoidDerivative(netVal[i+1])
         else:
-            d = tangetHyperbolicDerivative(netVal[i])
+            d = tangetHyperbolicDerivative(netVal[i+1])
         gradient = (np.dot(weightsRev[i],errorSignal[0]))*d
         errorSignal.insert(0,gradient)
 
-    return errorSignal
+    return errorSignal.reverse()
 
-def updateWeights(errorSignal,weights,netVal,layers,learn_rate,X,neurons):
+def updateWeights(errorSignal,weights,learn_rate,neurons):
     weightsHat=[]
-    errorSignalRev = errorSignal[::-1]
-    for i in range(len(layers) - 1):
-        weightsHat[i] = weights[i]-(learn_rate*neurons[i]*errorSignalRev[i])
+    for i in range(len(weights)):
+        weightsHat[i] = weights[i]+(learn_rate*neurons[i]*errorSignal[i])
     return weightsHat
 
 w = forwardProp(layers)
