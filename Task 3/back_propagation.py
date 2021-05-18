@@ -32,7 +32,7 @@ def forwardProp(X,Y,weights,layers,activation,netVal,bias):
         #     yHat = sigmoid(yHat[0])
         # else:
         #     yHat = tangetHyperbolicDerivative(netVal[i + 1])
-        if bias:
+        if bias and i!= len(layers) - 2 :
             yHat.append(1)
         newY = np.array(yHat)
         neurons.append(newY)
