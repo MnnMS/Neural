@@ -16,7 +16,7 @@ def set_labels():
     dataset['Class'] = newCol
     return dataset
 
-def extractFeatures(bias=1):
+def extractFeatures(bias):
     dataset = set_labels()
     Data = np.array(dataset)
     X = Data[:, 0:4]
@@ -30,5 +30,3 @@ def extractFeatures(bias=1):
         X_Test = np.concatenate((b_Test, X_Test), axis=1)
 
     return X_Train, X_Test, T_Train, T_Test
-
-extractFeatures()

@@ -13,11 +13,11 @@ def set_text(text, txtBox):
 
 def autoFill():
     layers = random.randrange(2,6)
-    neurons = np.random.randint(5, 20, 3)
+    neurons = np.random.randint(5, 10, 3)
     funct = random.randrange(2)
     set_text(str(layers), layers_txt)
     set_text("0.01", lrnRate_txt)
-    set_text("1000", epochs_txt)
+    set_text("100", epochs_txt)
     set_text("{},{},{}".format(neurons[0],neurons[1],neurons[2]),neu_txt)
     funcs_combo.set(functions[funct])
     bias_check.select()
@@ -35,7 +35,7 @@ def Train():
 
     #preprocess
     X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
-
+    
     # train
     # W = neural.adaline(int(epochs_txt.get()),X_Train,T_Train,float(lrnRate_txt.get()),float(mse_txt.get()), bias_var.get())
     # neural.drawLine(X_Test, W, diagramData)
