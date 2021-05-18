@@ -55,6 +55,3 @@ def updateWeights(errorSignal,weights,learn_rate,neurons):
         weightsHat[i] = weights[i]+(learn_rate*neurons[i]*errorSignal[i])
     return weightsHat
 
-w = forwardProp(layers)
-#print(np.dot(w[0]))
-print(w)
