@@ -44,7 +44,8 @@ def Train():
     X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
     
     # train
-    W = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
+    W,nu = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
+    print(W,nu)
 
 
     # # test

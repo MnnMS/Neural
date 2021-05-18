@@ -6,9 +6,10 @@ def tangetHyperbolic(netVal):
     return output
 
 def sigmoid(netVal):
-    output = 1/(1 + np.exp(-netVal))
+    output = []
+    for i in range(len(netVal)):
+        output.append (1/(1 + np.exp(-netVal[i])))
     return output
-
 def sigmoidDerivative(netVal):
     sigValue = sigmoid(netVal)
     return sigValue*(1-sigValue)
@@ -18,14 +19,23 @@ def tangetHyperbolicDerivative(netVal):
     return (-tinhValue)*tinhValue
 
 layers = [2,2,2]
-def forwardProp(X,Y,weights,layers,activation,*netVal):
+def forwardProp(X,Y,weights,layers,activation,netVal,bias):
     neurons = []
     neurons.append(X)
     for i in range(len(layers)-1):
-        yHat = np.dot(neurons[i],weights[i])
-        netVal.insert(0,yHat)
+        neuron = np.array(neurons[i].reshape(neurons[i].shape[0], 1))
+        yHat = np.dot(neuron.T,weights[i])
+        netVal.clear()
+        netVal.append(yHat)
         yHat = activation[0]()
-        neurons.append(yHat)
+        # if activation == 0:
+        #     yHat = sigmoid(yHat[0])
+        # else:
+        #     yHat = tangetHyperbolicDerivative(netVal[i + 1])
+        if bias:
+            yHat.append(1)
+        newY = np.array(yHat)
+        neurons.append(newY)
 
     return weights,neurons
 
