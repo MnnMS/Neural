@@ -13,8 +13,8 @@ def train(X,Y,layers,epochs,learn_rate,bias,activ_fun):
 
     # initializing weights based on layers and neurons
     outPutClasses = 3
-    layers.insert(0, X.shape[1])
     layers = list(np.asarray(layers) + bias)
+    layers.insert(0, X.shape[1])
     layers.append(outPutClasses)
     weights = []
     for i in range(len(layers) - 1):
