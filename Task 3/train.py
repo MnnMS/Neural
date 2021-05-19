@@ -30,8 +30,10 @@ def train(X,Y,layers,epochs,learn_rate,bias,activ_fun):
     noOfSamples,noOfFeatures = X.shape
     while epochs:
         for i in range(noOfSamples):
-            weights,neurons = forwardProp(X[i],Y[i],weights,layers,activation,netVal,bias)
+            weights,neurons = forwardProp(X[i],weights,layers,activation,netVal,bias)
+            errorSignal =backword(weights,neurons,Y[i],activ_fun,bias)
+            weights = updateWeights(errorSignal,weights,learn_rate,neurons)
         epochs -= 1
 
 
-    return weights ,neurons
+    return weights ,neurons, layers , activation, netVal
