@@ -2,7 +2,9 @@ import numpy as np
 
 
 def tangetHyperbolic(netVal):
-    output = (1-np.exp(-netVal))/(1+np.exp(-netVal))
+    output = []
+    for i in range(len(netVal)):
+        output.append((1-np.exp(-netVal[i]))/(1+np.exp(-netVal[i])))
     return output
 
 def sigmoid(netVal):
@@ -10,13 +12,17 @@ def sigmoid(netVal):
     for i in range(len(netVal)):
         output.append (1/(1 + np.exp(-netVal[i])))
     return output
-def sigmoidDerivative(netVal):
-    sigValue = sigmoid(netVal)
-    return sigValue*(1-sigValue)
+def sigmoidDerivative(neurons):
+    output = []
+    for i in range(len(neurons)):
+        output.append(neurons[i]*(1-neurons[i]))
+    return output
 
-def tangetHyperbolicDerivative(netVal):
-    tinhValue = tangetHyperbolic(netVal)
-    return (-tinhValue)*tinhValue
+def tangetHyperbolicDerivative(neurons):
+    output = []
+    for i in range(len(neurons)):
+        output.append((-neurons[i])*neurons[i])
+    return output
 
 layers = [2,2,2]
 def forwardProp(X,Y,weights,layers,activation,netVal,bias):
@@ -32,36 +38,40 @@ def forwardProp(X,Y,weights,layers,activation,netVal,bias):
         #     yHat = sigmoid(yHat[0])
         # else:
         #     yHat = tangetHyperbolicDerivative(netVal[i + 1])
-        if bias:
+        if bias and i!= len(layers) - 2 :
             yHat.append(1)
         newY = np.array(yHat)
         neurons.append(newY)
 
     return weights,neurons
 
-def backword(weights,neurons,Y,activation,netVal):
+def backword(weights,neurons,Y,activ_fun,bias):
     errorSignal = []
     yHatOutputLayer = neurons.pop()
-
-    if activation=='sigmoid': d=sigmoidDerivative(netVal[0])
-    else : d = tangetHyperbolicDerivative(netVal[0])
-
+    if activ_fun==0: d=sigmoidDerivative(yHatOutputLayer)
+    else : d = tangetHyperbolicDerivative(yHatOutputLayer)
     outputLayer = (Y-yHatOutputLayer)*d
-    errorSignal.insert(outputLayer)
+    errorSignal.insert(0,outputLayer)
     weightsRev = weights[::-1]
+    neuronsRev = neurons[::-1]
     for i in range(len(weights)-1):
-        if activation == 'sigmoid':
-            d = sigmoidDerivative(netVal[i+1])
+        if activ_fun == 0:
+            d = sigmoidDerivative(neuronsRev[i])
         else:
-            d = tangetHyperbolicDerivative(netVal[i+1])
+            d = tangetHyperbolicDerivative(neuronsRev[i])
+        if bias ==1:
+            weightsRev[i]=weightsRev[i][:-1,:]
+            d = d[:-1]
         gradient = (np.dot(weightsRev[i],errorSignal[0]))*d
         errorSignal.insert(0,gradient)
 
-    return errorSignal.reverse()
+    return errorSignal
 
 def updateWeights(errorSignal,weights,learn_rate,neurons):
     weightsHat=[]
     for i in range(len(weights)):
-        weightsHat[i] = weights[i]+(learn_rate*neurons[i]*errorSignal[i])
+        e = np.array(errorSignal[i].reshape(1,errorSignal[i].shape[0]))
+        n= np.array(neurons[i].reshape(neurons[i].shape[0],1))
+        weightsHat.append(weights[i]+(learn_rate*(n*e)))
     return weightsHat
 
