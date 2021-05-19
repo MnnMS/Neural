@@ -45,7 +45,7 @@ def Train():
     
     # train
     W,nu = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
-    print(W,nu)
+    #print(W,nu)
 
 
     # # test
