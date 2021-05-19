@@ -23,7 +23,7 @@ def extractFeatures(bias):
     T = Data[:, 4]
     b = np.ones([dataset.shape[0], 1])
 
-    X_Train, X_Test, T_Train, T_Test, b_Train, b_Test = train_test_split(X, T, b, test_size=0.4, shuffle=True)
+    X_Train, X_Test, T_Train, T_Test, b_Train, b_Test = train_test_split(X, T, b, test_size=0.4, shuffle=True,stratify=T)
 
     if bias:
         X_Train = np.concatenate((b_Train, X_Train), axis=1)
