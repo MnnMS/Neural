@@ -5,6 +5,7 @@ import random
 import preprocess
 import numpy as np
 import train
+import test
 import  back_propagation
 import tkinter.messagebox
 
@@ -44,10 +45,11 @@ def Train():
     X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
     
     # train
-    W,nu = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
+    W,nu,layers,activ,netVal = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
     #print(W,nu)
-
-
+    # Test
+    accuracy = test.test(X_Test,T_Test,W,layers,activ,netVal,bias_val)
+    print(accuracy)
     # # test
     # global X_test
     # X_test= X_Test

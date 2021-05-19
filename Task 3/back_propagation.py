@@ -25,7 +25,7 @@ def tangetHyperbolicDerivative(neurons):
     return output
 
 layers = [2,2,2]
-def forwardProp(X,Y,weights,layers,activation,netVal,bias):
+def forwardProp(X,weights,layers,activation,netVal,bias):
     neurons = []
     neurons.append(X)
     for i in range(len(layers)-1):
