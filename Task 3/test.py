@@ -16,8 +16,9 @@ def test(X,Y,weights,layers,activ_fun,netVal,bias):
         y_true.append(clas(y))
         y_pred.append(mx_ind)
 
-    accuracy = ((sum(np.diagonal(confusion_matrix(y_true, y_pred))))/L) * 100
-    return confusion_matrix(y_true, y_pred).astype(int),accuracy
+    matrix = test2(y_true, y_pred)
+    accuracy = ((sum(np.diagonal(matrix)))/L) * 100
+    return matrix.astype(int),accuracy
 
 def mx(list1):
     output = [0, 0, 0]
@@ -33,3 +34,14 @@ def clas(l):
         return 1
     elif l[2] == 1:
         return 2
+def test2 (y_act, y_pred ):
+    classes = np.unique(y_act)
+    confusion_matrix = np.zeros([3, 3])
+    for i in range(0, 60):
+        index = np.where(classes == y_act[i])
+        if y_pred[i] == y_act[i]:
+             confusion_matrix[index, index] += 1
+        else:
+             index_y = np.where(classes == y_pred[i])
+             confusion_matrix[index, index_y] += 1
+    return confusion_matrix
