@@ -32,9 +32,7 @@ def train(X,Y,layers,epochs,learn_rate,bias,activ_fun):
         for i in range(noOfSamples):
             weights,neurons = forwardProp(X[i],Y[i],weights,layers,activation,netVal,bias)
             errorSignal =backword(weights,neurons,Y[i],activ_fun,bias)
-            print(errorSignal)
             newWeights = updateWeights(errorSignal,weights,learn_rate,neurons)
-            print(newWeights)
         epochs -= 1
 
 
