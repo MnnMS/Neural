@@ -48,7 +48,8 @@ def Train():
     W,nu,layers,activ,netVal = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
     #print(W,nu)
     # Test
-    accuracy = test.test(X_Test,T_Test,W,layers,activ,netVal,bias_val)
+    matrix,accuracy = test.test(X_Test,T_Test,W,layers,activ,netVal,bias_val)
+    print("confusion Matrix = \n", matrix)
     print(accuracy)
     # # test
     # global X_test
