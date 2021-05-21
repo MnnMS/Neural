@@ -2,12 +2,10 @@ from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 import random
-import preprocess
+from preprocess import extractFeatures2,extractFeatures
 import numpy as np
 import train
 import test
-import  back_propagation
-import tkinter.messagebox
 
 def set_text(text, txtBox):
     txtBox.delete(0,END)
@@ -41,35 +39,19 @@ def Train():
     epochs_val = int(epochs_txt.get())
     lrnRate_val = float(lrnRate_txt.get())
     bias_val = int(bias_var.get())
+    bonus_val = int(bonus_var.get())
 
     #preprocess
-    X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
-
-    #bonus
-    X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures2(bias_val)
+    X_Train, X_Test, T_Train, T_Test = extractFeatures2(bias_val) if bonus_val else extractFeatures(bias_val)
     
     # train
     W,nu,layers,activ,netVal = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)
-    #print(W,nu)
+
     # Test
-    matrix,accuracy = test.test(X_Test,T_Test,W,layers,activ,netVal,bias_val)
+    matrix,accuracy = test.test(X_Test,T_Test,W,layers,activ,netVal,bias_val,bonus_val)
     print("confusion Matrix = \n", matrix)
     print(accuracy)
-    # # test
-    # global X_test
-    # X_test= X_Test
-    # global T_test
-    # T_test= T_Test
-    # global W_test
-    # W_test = W
 
-# def test():
-#     if X_test.size == 0 and T_test.size == 0 and W_test.size == 0:
-#         tk.messagebox.showinfo(title=None, message="Please train data before testing")
-#     else:
-#         matrix, accuracy = neural.test(X_test, T_test, W_test)
-#         print("confusion Matrix = \n",matrix)
-#         print("Accuracy = ",accuracy)
 
 mainForm = Tk()
 mainForm.geometry("350x300")
@@ -101,9 +83,12 @@ bias_var = tk.IntVar()
 bias_check = Checkbutton(mainForm,text = "Bias",variable=bias_var)
 bias_check.place(x = 35, y = 210)
 
+bonus_var = tk.IntVar()
+bonus_check = Checkbutton(mainForm,text = "Bonus",variable=bonus_var)
+bonus_check.place(x = 100, y = 210)
+
 autoFill_button = Button(mainForm,text = "AutoFill",command = autoFill, width=17, bd=1, bg='#bdc3c7').place(x = 180, y = 210)
-train_button = Button(mainForm,text = "Train",command = Train, width=10).place(x = 60, y = 255)
-test_button = Button(mainForm,text = "Test",command = print(""), width=10).place(x = 190, y = 255)
+train_button = Button(mainForm,text = "Run",command = Train, width=20).place(x = 90, y = 255)
 
 mainForm.resizable(False, False)
 

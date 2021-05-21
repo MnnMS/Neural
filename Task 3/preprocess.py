@@ -51,12 +51,17 @@ def extractFeatures(bias):
 
     return X_Train, X_Test, T_Train, T_Test
 
+top_features = ['label', '9x13', '10x11', '10x12', '10x13', '11x11', '11x12', '12x19',
+       '13x18', '13x19', '14x17', '14x18', '14x19', '15x17', '15x18', '15x19',
+       '16x17', '16x18', '17x17', '17x18', '18x17', '26x12', '26x13', '26x14',
+       '26x15']
+
 def extractFeatures2(bias=0):
     train_dataset = pd.read_csv('mnist_train.csv')
     test_dataset = pd.read_csv('mnist_test.csv')
-    small_data = train_dataset.iloc[:30000, :]
+    #small_data = train_dataset.iloc[:30000, :]
 
-    top_features = corr_matrix(small_data, 'label')
+    #top_features = corr_matrix(train_dataset, 'label')
     train_dataset = train_dataset[top_features]
     test_dataset = test_dataset[top_features]
 
@@ -78,7 +83,7 @@ def extractFeatures2(bias=0):
 
     return X_Train, X_Test, T_Train, T_Test
 
-def corr_matrix(data, y_col_name, thresh=0.25):
+def corr_matrix(data, y_col_name, thresh=0.26):
     corr = data.corr()
     top_features = corr.index[corr[y_col_name] >= thresh]
     plt.subplots(figsize=(12, 8))

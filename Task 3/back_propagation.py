@@ -4,7 +4,6 @@ import numpy as np
 def tangetHyperbolic(netVal):
     output = []
     for i in range(len(netVal)):
-        #output.append((1-np.exp(-netVal[i]))/(1+np.exp(-netVal[i])))
         output.append(np.tanh(netVal[i]))
     return output
 
@@ -35,10 +34,6 @@ def forwardProp(X,weights,layers,activation,netVal,bias):
         netVal.clear()
         netVal.append(yHat)
         yHat = activation[0]()
-        # if activation == 0:
-        #     yHat = sigmoid(yHat[0])
-        # else:
-        #     yHat = tangetHyperbolicDerivative(netVal[i + 1])
         if bias and i!= len(layers) - 2 :
             yHat.append(1)
         newY = np.array(yHat)
