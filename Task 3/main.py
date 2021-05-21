@@ -18,9 +18,10 @@ def autoFill():
     layers = random.randrange(2,5)
     neurons = np.random.randint(2, 15, layers)
     funct = random.randrange(2)
+    ep = random.randrange(300,1000)
     set_text(str(layers), layers_txt)
     set_text("0.01", lrnRate_txt)
-    set_text("200", epochs_txt)
+    set_text(str(ep), epochs_txt)
     neur_txt = ""
     for i in range(layers):
         neur_txt += str(neurons[i])
@@ -43,6 +44,9 @@ def Train():
 
     #preprocess
     X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures(bias_val)
+
+    #bonus
+    X_Train, X_Test, T_Train, T_Test = preprocess.extractFeatures2(bias_val)
     
     # train
     W,nu,layers,activ,netVal = train.train(X_Train, T_Train, neurons, epochs_val, lrnRate_val, bias_val, fun_sel)

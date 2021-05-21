@@ -12,7 +12,7 @@ def train(X,Y,layers,epochs,learn_rate,bias,activ_fun):
         activation.append(lambda: tangetHyperbolic(*netVal[0]))
 
     # initializing weights based on layers and neurons
-    outPutClasses = 3
+    outPutClasses = len(np.unique(Y))
     layers = list(np.asarray(layers))
     layers.insert(0, X.shape[1])
     layers.append(outPutClasses)

@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def set_labels():
     dataset = pd.read_csv('IrisData.txt')
@@ -49,22 +51,47 @@ def extractFeatures(bias):
 
     return X_Train, X_Test, T_Train, T_Test
 
-def extractFeatures2(bias):
-    dataset = set_labels()
-    Data = np.array(dataset)
-    X = Data[:, 0:4]
-    T = Data[:, 4]
-    b = np.ones([dataset.shape[0], 1])
+def extractFeatures2(bias=0):
+    train_dataset = pd.read_csv('mnist_train.csv')
+    test_dataset = pd.read_csv('mnist_test.csv')
+    #small_data = train_dataset.iloc[:30000, :]
 
-    X_Train, X_Test, T_Train, T_Test, b_Train, b_Test = train_test_split(X, T, b, test_size=0.4, shuffle=True,stratify=T)
+    top_features = corr_matrix(train_dataset, 'label')
+    train_dataset = train_dataset[top_features]
+    test_dataset = test_dataset[top_features]
 
-    arr = [0, 0, 0]
-    for test in T_Test:
-        i = test.index(1)
-        arr[i] += 1
+    train_Data = np.array(train_dataset)
+    test_Data = np.array(test_dataset)
+    np.random.shuffle(train_Data)
+    np.random.shuffle(test_Data)
+
+    X_Train = featureScaling(train_Data[:, 1:])
+    T_Train = train_Data[:, 0]
+    X_Test = featureScaling(test_Data[:, 1:])
+    T_Test = test_Data[:, 0]
 
     if bias:
+        b_Train = np.ones([train_Data.shape[0], 1])
+        b_Test = np.ones([test_Data.shape[0], 1])
         X_Train = np.concatenate((b_Train, X_Train), axis=1)
         X_Test = np.concatenate((b_Test, X_Test), axis=1)
 
     return X_Train, X_Test, T_Train, T_Test
+
+def corr_matrix(data, y_col_name, thresh=0.25):
+    corr = data.corr()
+    top_features = corr.index[corr[y_col_name] >= thresh]
+    plt.subplots(figsize=(12, 8))
+    top_corr = data[top_features].corr()
+    sns.heatmap(top_corr, annot=True)
+    plt.show()
+    return top_features
+
+def featureScaling(X,a=0,b=1):
+    Normalized_X=np.zeros((X.shape[0],X.shape[1]))
+    for i in range(X.shape[1]):
+        mx = max(X[:,i])
+        mn = min(X[:,i])
+        if mx != mn:
+            Normalized_X[:,i]=((X[:,i]-min(X[:,i]))/(mx-mn))*(b-a)+a
+    return Normalized_X

@@ -11,22 +11,21 @@ def test(X,Y,weights,layers,activ_fun,netVal,bias):
     for i in range(0,L):
         _,neurons = forwardProp(X[i],weights,layers,activ_fun,netVal,bias)
         yHatoutput = neurons[index]
-        modOutput , mx_ind = mx(yHatoutput)
+        mx_ind = mx(yHatoutput)
         y = Y[i]
-        y_true.append(clas(y))
+        y_true.append(y)
         y_pred.append(mx_ind)
 
-    matrix = test2(y_true, y_pred)
+    #matrix = test2(y_true, y_pred)
+    matrix = confusion_matrix(y_true, y_pred)
     accuracy = ((sum(np.diagonal(matrix)))/L) * 100
     return matrix.astype(int),accuracy
 
 def mx(list1):
-    output = [0, 0, 0]
     mx = max(list1)
     list1 = list(list1)
     mx_index = list1.index(mx)
-    output[mx_index] = 1
-    return output,mx_index
+    return mx_index
 def clas(l):
     if l[0] == 1:
         return 0
@@ -37,7 +36,7 @@ def clas(l):
 def test2 (y_act, y_pred ):
     classes = np.unique(y_act)
     confusion_matrix = np.zeros([3, 3])
-    for i in range(0, 60):
+    for i in range(len(y_act)):
         index = np.where(classes == y_act[i])
         if y_pred[i] == y_act[i]:
              confusion_matrix[index, index] += 1
