@@ -54,9 +54,9 @@ def extractFeatures(bias):
 def extractFeatures2(bias=0):
     train_dataset = pd.read_csv('mnist_train.csv')
     test_dataset = pd.read_csv('mnist_test.csv')
-    #small_data = train_dataset.iloc[:30000, :]
+    small_data = train_dataset.iloc[:30000, :]
 
-    top_features = corr_matrix(train_dataset, 'label')
+    top_features = corr_matrix(small_data, 'label')
     train_dataset = train_dataset[top_features]
     test_dataset = test_dataset[top_features]
 
