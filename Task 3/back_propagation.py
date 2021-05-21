@@ -4,7 +4,8 @@ import numpy as np
 def tangetHyperbolic(netVal):
     output = []
     for i in range(len(netVal)):
-        output.append((1-np.exp(-netVal[i]))/(1+np.exp(-netVal[i])))
+        #output.append((1-np.exp(-netVal[i]))/(1+np.exp(-netVal[i])))
+        output.append(np.tanh(netVal[i]))
     return output
 
 def sigmoid(netVal):

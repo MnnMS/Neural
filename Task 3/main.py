@@ -15,12 +15,12 @@ def set_text(text, txtBox):
     return
 
 def autoFill():
-    layers = random.randrange(2,6)
-    neurons = np.random.randint(1, 5, layers)
+    layers = random.randrange(2,5)
+    neurons = np.random.randint(2, 15, layers)
     funct = random.randrange(2)
     set_text(str(layers), layers_txt)
     set_text("0.01", lrnRate_txt)
-    set_text("100", epochs_txt)
+    set_text("200", epochs_txt)
     neur_txt = ""
     for i in range(layers):
         neur_txt += str(neurons[i])
