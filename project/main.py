@@ -2,10 +2,11 @@ import tensorflow as tf
 import numpy as np
 import tflearn
 import os
+import pandas as pd
 from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
-from preprocess import get_dataset
+from preprocess import get_dataset, create_test_data
 from model_paras import *
 
 device_name = tf.test.gpu_device_name()
@@ -53,3 +54,16 @@ else:
 
 test_acc = model.evaluate(X_Test,  Y_Test)
 print(test_acc)
+
+file = pd.read_csv("Submit.csv")
+preds, names = create_test_data(model)
+file['Image'] = names
+output = []
+for pred in preds:
+    if pred[0] > pred[1]:
+        output.append(1)
+    else:
+        output.append(0)
+file['Label'] = output
+file.to_csv("Submit.csv")
+

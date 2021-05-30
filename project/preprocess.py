@@ -24,6 +24,19 @@ def create_train_data():
     np.save(TEST_DIR, Y)
     return X, Y
 
+def create_test_data(model):
+    data = []
+    names = []
+    for img in tqdm(os.listdir(TEST_DATA_DIR)):
+        names.append(img)
+        path = os.path.join(TEST_DATA_DIR, img)
+        img_data = cv2.imread(path, RGB)
+        img_data = cv2.resize(img_data, (IMG_SIZE, IMG_SIZE))
+        img_data = img_data.reshape(IMG_SIZE, IMG_SIZE, 1)
+        pred = model.predict([img_data])[0]
+        data.append(pred)
+    return data, names
+
 def get_dataset():
     if os.path.exists(TRAIN_DIR):
         X = np.load(TRAIN_DIR)
