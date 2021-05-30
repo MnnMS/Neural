@@ -15,9 +15,6 @@ print('Found GPU at: {}'.format(device_name))
 
 
 X_Train, X_Test, Y_Train, Y_Test = get_dataset()
-X_Train = np.array(X_Train).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
-X_Test = np.array(X_Test).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
-
 
 conv_input = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 1], name='input')
 conv1 = conv_2d(conv_input, 32, 5, activation='relu')
@@ -35,6 +32,7 @@ pool4 = max_pool_2d(conv4, 5)
 conv5 = conv_2d(pool4, 32, 5, activation='relu')
 pool5 = max_pool_2d(conv5, 5)
 
+
 fully_layer = fully_connected(pool5, 1024, activation='relu')
 fully_layer = dropout(fully_layer, 0.5)
 
@@ -51,5 +49,5 @@ else:
           snapshot_step=500, show_metric=True, run_id=MODEL_NAME)
     model.save('model.tfl')
 
-test_acc = model.evaluate(X_Test,  Y_Test)
-print(test_acc)
+#test_acc = model.evaluate(X_Test,  Y_Test)
+#print(test_acc)
