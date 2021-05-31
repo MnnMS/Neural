@@ -25,7 +25,7 @@ def create_train_data():
 
 def create_test_data(model):
     data = []
-    names = []
+    names= []
     for img in tqdm(os.listdir(TEST_DATA_DIR)):
         names.append(img)
         path = os.path.join(TEST_DATA_DIR, img)

@@ -35,7 +35,7 @@ pool5 = max_pool_2d(conv5, 5)
 
 
 fully_layer = fully_connected(pool5, 1024, activation='relu')
-fully_layer = dropout(fully_layer, 0.8)
+fully_layer = dropout(fully_layer, 0.5)
 
 cnn_layers = fully_connected(fully_layer, 2, activation='softmax')
 
@@ -50,8 +50,8 @@ else:
           snapshot_step=500, show_metric=True, run_id=MODEL_NAME)
     model.save('model.tfl')
 
-#test_acc = model.evaluate(X_Test,  Y_Test)
-#print(test_acc)
+# test_acc = model.evaluate(X_Test,  Y_Test)
+# print(test_acc)
 
 # file = pd.read_csv("Submit.csv")
 # preds, names = create_test_data(model)
